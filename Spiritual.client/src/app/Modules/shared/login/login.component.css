@@ -60,13 +60,6 @@ button{
   z-index: 9;
 }
 
-/* Add styles to the form container */
-.form-container {
-  max-width: 400px;
-  padding: 3vw;
-  background-color: white;
-}
-
 /* Set a style for the submit/send button */
 .btn-primary {
    width: 60px;
@@ -76,13 +69,10 @@ button{
 .btn-secondary {
   width: 100%;
 }
-.message-box{
-   width: 100%;
-   height: 30vh;
-}
-
 .notifications{
-   max-width: 400px;
+   width: 20rem;
+   height: 50vh;
    padding: 3vw;
    background-color: white;
+   overflow: auto;
 }

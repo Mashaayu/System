@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, AbstractControl, } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { ClearUserState, LoginUserAction } from '../../../States/User/user.action';
@@ -7,14 +7,15 @@ import { GetDevoteeDataSelector } from '../../../States/Devotee/devotee.selector
 import { UserState } from '../../../States/User/user.state';
 import { getUser } from '../../../States/User/user.selector';
 import { Router } from '@angular/router';
+import { SignalRService } from '../../../Services/signal-r.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent {
-
+export class LoginComponent implements OnInit,OnDestroy{
+  Notification:string;
   SentMessage : string ;
   loginForm: FormGroup;
   val = true;
@@ -24,7 +25,7 @@ export class LoginComponent {
   buttontext :string = 'Submit Credential';
   
   constructor(
-    private store:Store<{appstate:UserState}>,private router : Router
+    private store:Store<{appstate:UserState}>,private router : Router,private signalRservice :SignalRService
   ) {
 
     // localStorage.removeItem('token');
@@ -34,6 +35,27 @@ export class LoginComponent {
       Password: new FormControl('', Validators.required),
       Role: new FormControl('', Validators.required),
       OTP: new FormControl(''),
+    });
+    
+
+  }
+  ngOnDestroy(): void {
+   this.signalRservice.StopConnection();
+  }
+  ngOnInit(): void {
+    let notificationBox = document.getElementById('alerts');
+   
+    this.signalRservice.StartConnection().subscribe(()=>{
+      this.signalRservice.ReceiveMessage().subscribe((data) => {
+        this.Notification = data;
+    
+  
+        let p = document.createElement('p');
+        p.innerHTML = `${data}`;
+        p.className = 'alert alert-success';
+        notificationBox?.append(p);
+        
+      });
     });
   }
 
@@ -147,16 +169,6 @@ export class LoginComponent {
   }
 
 
-  SendMessage(){
-    let messageBox =   document.getElementById('messageBox');
-    let msg = document.createElement('p');
-    msg.className = 'alert alert-info';
-    msg.style.marginLeft = '10%'
-    msg.innerHTML = `${this.SentMessage}`
-    if(this.SentMessage != ''){
-      messageBox?.appendChild(msg);
-    }
-    this.SentMessage = ''
-  }
+ 
 
 }

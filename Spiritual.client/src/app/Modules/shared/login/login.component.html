@@ -55,24 +55,9 @@
 
 <div class="chat-popup" id="myForm" [hidden]="widget">
     
-  <div class="notifications">
+  <div class="notifications" id="alerts">
     <h3>Notifications</h3>
-    <p class="alert alert-primary">The highest Donated amount is 50,000 INR </p>
-    <p class="alert alert-primary">The total Donation amount is 96,000 INR </p>
   </div>
 
-  <div class="form-container">
-    <h3>Support</h3>
-    <div class="message-box" id="messageBox">
-         
-    </div>
-    <div style="display: flex;">
-        <input placeholder="Type message.."  class="form-control" [(ngModel)]="SentMessage" >
-
-        <button type="submit" class="btn btn-primary" (click)="SendMessage()">Send</button>
-    </div>
-   
-    <button type="button" class="btn btn-light"  (click)="openForm()">Close</button>
-  </div>
-
+  <button type="button" class="btn btn-light"  (click)="openForm()">Close</button>
 </div>

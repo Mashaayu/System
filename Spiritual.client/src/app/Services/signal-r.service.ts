@@ -46,16 +46,10 @@ export class SignalRService {
       })
    }
   
-   SendNotification(NotificationMSG : string){
-      this.hubConnection.invoke("SendNotification",NotificationMSG)
-   }
-
-   ReceiveNotification():Observable<string>{
-    return new Observable<string>((observer)=>{
-      this.hubConnection.on("ReceiveNotification",(notification)=>{
-        observer.next(notification);
-      })
-    })
+   StopConnection(){
+    console.log("stop Connection");
+    
+    this.hubConnection.stop();
    }
 
    SendMessage(message : string){
@@ -65,10 +59,9 @@ export class SignalRService {
    ReceiveMessage() : Observable<string>{
     return new Observable<string>((observer)=>{
       this.hubConnection.on("ReceiveMessage",(msg)=>{
-        console.log(msg);
-        
+    
           observer.next(msg);
-      })
+      });
     })
    }
 }
